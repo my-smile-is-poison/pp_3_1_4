@@ -5,14 +5,9 @@ package com.example.pp_3_2.project.Controller;
 import com.example.pp_3_2.project.Models.User;
 import com.example.pp_3_2.project.Service.RoleService;
 import com.example.pp_3_2.project.Service.UserServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -20,20 +15,26 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping(name = "/admin")
 public class AdminController {
-    @Autowired
+
     private UserServiceImp userService;
 
-    @Autowired
+
     private RoleService roleService;
+
+    public AdminController(UserServiceImp userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
+
     @GetMapping("/admin")
-    @Secured("ROLE_ADMIN")
     public String displayAllUsers(Model model) {
         model.addAttribute("userList", userService.getAllUsers());
         return "admin";
     }
+
     @GetMapping("/admin/addUser")
-    @Secured("ROLE_ADMIN")
     public String displayNewUserForm(Model model) {
         model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("headerMessage", "Добавить пользователя");
@@ -41,8 +42,7 @@ public class AdminController {
         return "addUser";
     }
 
-    @PostMapping("/admin/editUser")
-    @Secured("ROLE_ADMIN")
+    @PatchMapping("/admin/editUser")
     public String updateUsers(@ModelAttribute("user") User user, @RequestParam(value = "nameRoles", required = false) String[] roles) {
         userService.getUserAndRoles(user, roles);
         userService.saveUser(user);
@@ -50,7 +50,6 @@ public class AdminController {
     }
 
     @GetMapping("/admin/editUser")
-    @Secured("ROLE_ADMIN")
     public String displayEditUserForm(@RequestParam("id") Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("roles", roleService.getAllRoles());
@@ -59,29 +58,25 @@ public class AdminController {
         return "editUser";
     }
 
+
     @PostMapping("/admin/addUser")
-    @Secured("ROLE_ADMIN")
-    String create(@ModelAttribute("user") User user, @RequestParam(name = "roles", required = false) List<Long> roleId) {
+    String create(@ModelAttribute("user") User user, @RequestParam(value = "nameRoles", required = false) String[] roles) {
         userService.getNotNullRole(user);
+        userService.getUserAndRoles(user, roles);
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/admin/deleteUser")
-    @Secured("ROLE_ADMIN")
     public String deleteUserById(@RequestParam("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
 
 
-    @PostMapping("/admin")
-    public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) Long userId,
-                              @RequestParam(required = true, defaultValue = "" ) String action,
-                              Model model) {
-        if (action.equals("delete")){
-            userService.deleteUser(userId);
-        }
+    @DeleteMapping("/admin/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
         return "redirect:/admin";
     }
 
