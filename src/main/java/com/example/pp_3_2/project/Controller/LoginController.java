@@ -2,19 +2,16 @@ package com.example.pp_3_2.project.Controller;
 
 import com.example.pp_3_2.project.Models.User;
 import com.example.pp_3_2.project.Service.UserService;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
 
-
 @Controller
-public class UserController {
+public class LoginController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
+    public LoginController(UserService userService) {
         this.userService = userService;
     }
 

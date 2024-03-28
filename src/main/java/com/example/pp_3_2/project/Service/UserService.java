@@ -1,21 +1,18 @@
 package com.example.pp_3_2.project.Service;
 
+import com.example.pp_3_2.project.Models.Role;
 import com.example.pp_3_2.project.Models.User;
 
 import java.util.List;
 
 public interface UserService {
 
-     List<User> getAllUsers();
-
-     User getUserById(Long id);
-
+     User findByUsername(String username);
+     List<User> getUsers();
+     User showUserById(Long id);
      void saveUser(User user);
+     void deleteUserById(Long id);
+     void updateUserById(Long id, User user);
 
-     User getUserAndRoles(User user, String[] roles);
-
-
-     void deleteUser(Long id);
-
-     User getNotNullRole(User user);
+     List<Role> findRoles();
 }
