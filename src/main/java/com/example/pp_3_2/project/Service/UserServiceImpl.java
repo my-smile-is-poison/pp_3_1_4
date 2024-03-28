@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+public class UserServiceImpl implements UserService {
 
-public class UserServiceImp implements UserService {
-    private  UserRepository userRepository;
+    private UserRepository userRepository;
+
     private RoleRepository roleRepository;
-    private final PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     @Autowired
@@ -29,7 +31,6 @@ public class UserServiceImp implements UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
-
 
     @Override
     public User findByUsername(String username) {
@@ -52,7 +53,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public void saveUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -65,7 +66,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public void updateUserById(Long id, User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

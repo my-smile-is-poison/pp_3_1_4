@@ -5,7 +5,6 @@ package com.example.pp_3_2.project.Controller;
 import com.example.pp_3_2.project.Models.User;
 import com.example.pp_3_2.project.Service.RoleService;
 import com.example.pp_3_2.project.Service.UserService;
-import com.example.pp_3_2.project.Service.UserServiceImp;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +16,9 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping(name = "/admin")
 public class AdminController {
 
     private final UserService userService;
-
 
     public AdminController(UserService userService) {
         this.userService = userService;

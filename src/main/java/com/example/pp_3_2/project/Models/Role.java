@@ -6,16 +6,16 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     private String name;
 
-    public Role() {
-    }
     public Role(String name) {
         this.name = name;
     }
@@ -27,6 +27,14 @@ public class Role implements GrantedAuthority {
     public Role(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Role() {
+    }
+
+    @Override
+    public String toString() {
+        return name.substring(5);
     }
 
     public Long getId() {
@@ -51,8 +59,20 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
-    public String toString() {
-        return name.substring(5);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Role role = (Role) o;
+
+        if (!id.equals(role.id)) return false;
+        return name.equals(role.name);
     }
 
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

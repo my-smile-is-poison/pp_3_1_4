@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserDetailServiceImp implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     private final UserService userService;
 
     @Autowired
-    public UserDetailServiceImp(UserService userService) {
+    public UserDetailsServiceImpl(UserService userService) {
         this.userService = userService;
     }
 
@@ -42,3 +42,4 @@ public class UserDetailServiceImp implements UserDetailsService {
         return roles.stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
     }
 }
+

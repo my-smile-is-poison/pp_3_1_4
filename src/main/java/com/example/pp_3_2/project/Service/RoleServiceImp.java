@@ -26,7 +26,7 @@ public class RoleServiceImp implements RoleService {
     public Set<Role> getRoleByName(String[] roleName) {
         Set<Role> roleSet = new HashSet<>();
         for (String role : roleName) {
-            roleSet.add(roleRepository.findRoleByName(role));
+            roleSet.add(roleRepository.findByName(role));
         }
         return roleSet;
     }
